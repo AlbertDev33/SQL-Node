@@ -3,9 +3,15 @@ const Address = require('../model/Address');
 
 module.exports = {
     async index(req, res) {
-        const address = await Address.findAll();
+        const { user_id } = req.params;
 
-        return res.json(address);
+        const user = await User.findByPk(user_id, {
+            include: { association: 'addresses' }
+        });
+
+        return res.json(user);
+        // Retornar apenas os endereços
+        // return res.json(user.addresses);
     },
 
     async store(req, res) {
